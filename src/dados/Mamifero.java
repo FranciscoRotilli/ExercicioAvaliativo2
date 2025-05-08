@@ -4,8 +4,8 @@ public class Mamifero extends Pet {
 	private double peso;
 	private Pelo pelo;
 
-	public Mamifero(String nome, double valorBase, double peso, Pelo pelo) {
-        super(nome, valorBase);
+	public Mamifero(int codigo, String nome, double valorBase, double peso, Pelo pelo) {
+        super(codigo, nome, valorBase);
         this.peso = peso;
 		this.pelo = pelo;
 	}

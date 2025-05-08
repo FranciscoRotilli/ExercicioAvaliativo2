@@ -3,8 +3,8 @@ package dados;
 public class Ave extends Pet {
 	private boolean voa;
 
-	public Ave(String nome, double valorBase, boolean voa) {
-		super(nome, valorBase);
+	public Ave(int codigo, String nome, double valorBase, boolean voa) {
+		super(codigo, nome, valorBase);
 		this.voa = voa;
 	}
 

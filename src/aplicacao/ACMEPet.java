@@ -1,6 +1,5 @@
 package aplicacao;
-import dados.Bicharada;
-import dados.Pet;
+import dados.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +21,36 @@ public class ACMEPet {
 
 	}
 
+	private void cadastraAves() {
+		ArrayList<ArrayList<String>> dados = lerDados("aves.csv");
+		for (ArrayList<String> linha : dados) {
+			int codigo = Integer.parseInt(linha.get(0));
+			String nome = linha.get(1);
+			double valorBase = Double.parseDouble(linha.get(2));
+			boolean voa = linha.get(3).equals("TRUE");
+			//TODO verificações e impressao do resultado no arquivo
+			Pet pet = new Ave(codigo, nome, valorBase, voa);
+			bicharada.create(pet);
+		}
+	}
+
+	private void cadastraMamiferos() {
+		ArrayList<ArrayList<String>> dados = lerDados("mamiferos.csv");
+		if (!dados.isEmpty()) {
+			for (ArrayList<String> linha : dados) {
+				int codigo = Integer.parseInt(linha.get(0));
+				String nome = linha.get(1);
+				double valorBase = Double.parseDouble(linha.get(2));
+				double peso = Double.parseDouble(linha.get(3));
+				String pelo = linha.get(4);
+				Pelo peloEnum = pelo.equals("CURTO") ? Pelo.CURTO : pelo.equals("MEDIO") ? Pelo.MEDIO : pelo.equals("LONGO") ? Pelo.LONGO : null;
+				//TODO verificações e impressao do resultado no arquivo
+				Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
+				bicharada.create(pet);
+			}
+		}
+	}
+
 	private ArrayList<ArrayList<String>> lerDados(String arquivo) {
 		Path path = Paths.get(arquivo);
 		ArrayList<ArrayList<String>> dados = new ArrayList<>();
@@ -29,9 +58,7 @@ public class ACMEPet {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] valores = line.split(",");
-
 				ArrayList<String> linha = new ArrayList<>(Arrays.asList(valores));
-
 				dados.add(linha);
 			}
 		}

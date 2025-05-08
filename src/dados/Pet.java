@@ -1,13 +1,12 @@
 package dados;
 
 public abstract class Pet {
-	private static int contador = 0;
 	private int codigo;
 	private String nome;
 	private double valorBase;
 
-	public Pet(String nome, double valorBase) {
-		this.codigo = contador++;
+	public Pet(int codigo, String nome, double valorBase) {
+		this.codigo = codigo;
 		this.nome = nome;
 		this.valorBase = valorBase;
 	}
