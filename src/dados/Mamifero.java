@@ -12,6 +12,6 @@ public class Mamifero extends Pet {
 
 	@Override
 	public double calculaValor() {
-		return 0;
+		return pelo == Pelo.CURTO ? (getValorBase() * 1.1) : pelo == Pelo.MEDIO ? (getValorBase() * 1.2) : getValorBase() * 1.6;
 	}
 }

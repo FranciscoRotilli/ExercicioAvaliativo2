@@ -10,6 +10,6 @@ public class Ave extends Pet {
 
 	@Override
 	public double calculaValor() {
-		return 0;
+		return voa ? (getValorBase() * 1.3) : getValorBase();
 	}
 }
