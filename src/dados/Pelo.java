@@ -1,11 +1,3 @@
 package dados;
 
-public enum Pelo {
-
-	CURTO,
-
-	MEDIO,
-
-	LONGO;
-
-}
+public enum Pelo { CURTO, MEDIO, LONGO; }

@@ -1,48 +1,47 @@
 package dados;
-
-import java.util.List;
-import java.util.Collection;
+import java.util.ArrayList;
 
 public class Bicharada implements Crud {
-
-	private List<Pet> pets;
-
-	private Collection<Pet> pet;
+	private ArrayList<Pet> pets;
 
 	public Bicharada() {
-
+		pets = new ArrayList<>();
 	}
 
-
-	/**
-	 * @see dados.Crud#create(java.lang.Object)
-	 */
+	@Override
 	public boolean create(Object o) {
-		return false;
+		return pets.add((Pet) o);
 	}
 
-
-	/**
-	 * @see dados.Crud#retrieve(int)
-	 */
+	@Override
 	public Object retrieve(int codigo) {
+		for (Pet pet : pets) {
+			if (pet.getCodigo() == codigo) {
+				return pet;
+			}
+		}
 		return null;
 	}
 
-
-	/**
-	 * @see dados.Crud#update(int, java.lang.Object)
-	 */
+	@Override
 	public boolean update(int codigo, Object o) {
+		for (int i = 0; i < pets.size(); i++) {
+			if (pets.get(i).getCodigo() == codigo) {
+				pets.set(i, (Pet) o);
+				return true;
+			}
+		}
 		return false;
 	}
 
-
-	/**
-	 * @see dados.Crud#delete(int)
-	 */
+	@Override
 	public boolean delete(int codigo) {
+		for (int i = 0; i < pets.size(); i++) {
+			if (pets.get(i).getCodigo() == codigo) {
+				pets.remove(i);
+				return true;
+			}
+		}
 		return false;
 	}
-
 }
