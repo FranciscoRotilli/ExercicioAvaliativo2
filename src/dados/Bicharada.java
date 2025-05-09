@@ -99,4 +99,12 @@ public class Bicharada implements Crud {
 		}
 		return mamifero;
 	}
+
+	public int contPelo(Pelo pelo) {
+		int cont = 0;
+		for (Pet pet : pets) {
+			if (pet instanceof Mamifero mam && mam.getPelo() == pelo) cont++;
+		}
+		return cont;
+	}
 }
