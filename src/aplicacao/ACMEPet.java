@@ -27,7 +27,7 @@ public class ACMEPet {
 		cadastraMamiferos(); // 2. Cadastrar mamíferos
 		mostraValoresPets(); // 3. Mostrar valores de todos os pets
 		maiorValorBase(); // 4. Mostrar pet com maior valor base
-		mostraDadosPets(); // 5. Mostrar os dados de um determinado pet
+		mostraDadosPet(); // 5. Mostrar os dados de um determinado pet
 		removePet(); // 6. Remover um determinado pet
 		qtdAvesVoam(); // 7. Mostrar a quantidade de aves que voam
 		mostraMamPeloCurtoMaisPesado(); // 8. Mostrar mamífero com pelo curto mais pesado
@@ -35,7 +35,7 @@ public class ACMEPet {
 	}
 
 	private void cadastraAves() {
-		ArrayList<ArrayList<String>> dados = lerDados("aves.csv");
+		ArrayList<ArrayList<String>> dados = leDados("aves.csv");
 		for (ArrayList<String> linha : dados) {
 			int codigo = Integer.parseInt(linha.get(0));
 			String nome = linha.get(1);
@@ -54,7 +54,7 @@ public class ACMEPet {
 	}
 
 	private void cadastraMamiferos() {
-		ArrayList<ArrayList<String>> dados = lerDados("mamiferos.csv");
+		ArrayList<ArrayList<String>> dados = leDados("mamiferos.csv");
 		if (!dados.isEmpty()) {
 			for (ArrayList<String> linha : dados) {
 				int codigo = Integer.parseInt(linha.get(0));
@@ -104,9 +104,8 @@ public class ACMEPet {
 		}
 	}
 
-	private void mostraDadosPets() {
-		//TODO substituir por entrada do arquivo
-		int codigo = in.nextInt();
+	private void mostraDadosPet() {
+		int codigo = leEntrada("dados.txt", 0);
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
 			//TODO substituir por impressao no arquivo
@@ -123,8 +122,7 @@ public class ACMEPet {
 	}
 
 	private void removePet() {
-		//TODO substituir por entrada do arquivo
-		int codigo = in.nextInt();
+		int codigo = leEntrada("dados.txt", 1);
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
 			//TODO substituir por impressao no arquivo
@@ -170,7 +168,7 @@ public class ACMEPet {
 		}
 	}
 
-	private ArrayList<ArrayList<String>> lerDados(String arquivo) {
+	private ArrayList<ArrayList<String>> leDados(String arquivo) {
 		Path path = Paths.get(arquivo);
 		ArrayList<ArrayList<String>> dados = new ArrayList<>();
 		try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
@@ -185,6 +183,23 @@ public class ACMEPet {
 			System.err.format("Erro de E/S: %s%n", e);
 		}
 		return dados;
+	}
+
+	private int leEntrada(String arquivo, int linha) {
+		Path path = Paths.get(arquivo);
+		int entrada = 0;
+		try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
+			String[] line = new String[2];
+			line[0] = reader.readLine();
+			line[1] = reader.readLine();
+			if (linha == 0) entrada = Integer.parseInt(line[0]);
+			else if (linha == 1) entrada = Integer.parseInt(line[1]);
+
+		}
+		catch (IOException e) {
+			System.err.format("Erro de E/S: %s%n", e);
+		}
+		return entrada;
 	}
 
 }
