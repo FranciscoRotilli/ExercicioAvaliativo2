@@ -14,4 +14,12 @@ public class Mamifero extends Pet {
 	public double calculaValor() {
 		return pelo == Pelo.CURTO ? (getValorBase() * 1.1) : pelo == Pelo.MEDIO ? (getValorBase() * 1.2) : getValorBase() * 1.6;
 	}
+
+	public double getPeso() {
+		return peso;
+	}
+
+	public String getPelo() {
+		return pelo.toString();
+	}
 }

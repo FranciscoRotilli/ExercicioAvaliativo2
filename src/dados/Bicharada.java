@@ -44,4 +44,38 @@ public class Bicharada implements Crud {
 		}
 		return false;
 	}
+
+	public boolean verificaCodigoUnico(int codigo) {
+		for (Pet pet : pets) {
+			if (pet.getCodigo() == codigo) return false;
+		}
+		return true;
+	}
+
+	public ArrayList<Double> getValoresPets() {
+		ArrayList<Double> valores = new ArrayList<>();
+        for (Pet pet : pets) {
+			valores.add(pet.calculaValor());
+        }
+		return valores;
+	}
+
+	public boolean isEmpty() {
+		return pets.isEmpty();
+	}
+
+	public Pet getMaiorValorPet() {
+		if (pets.isEmpty()) return null;
+
+		double maiorValor = 0;
+		Pet maiorPet = pets.getFirst();
+		for (Pet pet : pets) {
+			double valor = pet.calculaValor();
+			if (valor > maiorValor) {
+				maiorValor = valor;
+				maiorPet = pet;
+			}
+		}
+		return maiorPet;
+	}
 }

@@ -12,4 +12,8 @@ public class Ave extends Pet {
 	public double calculaValor() {
 		return voa ? (getValorBase() * 1.3) : getValorBase();
 	}
+
+	public boolean getVoa() {
+		return voa;
+	}
 }
