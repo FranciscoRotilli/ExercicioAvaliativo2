@@ -78,4 +78,25 @@ public class Bicharada implements Crud {
 		}
 		return maiorPet;
 	}
+
+	public int qtdAvesVoam() {
+		int qtd = 0;
+		for (Pet pet : pets) {
+			if (pet instanceof Ave ave && ave.getVoa()) qtd++;
+		}
+		return qtd;
+	}
+
+	public Mamifero mamiferoPeloCurtoMaisPesado() {
+		if (pets.isEmpty()) return null;
+		double peso = 0;
+		Mamifero mamifero = null;
+		for (Pet pet : pets) {
+			if (pet instanceof Mamifero mam && mam.getPelo() == Pelo.CURTO && mam.getPeso() > peso) {
+				peso = mam.getPeso();
+				mamifero = mam;
+			}
+		}
+		return mamifero;
+	}
 }

@@ -89,12 +89,13 @@ public class ACMEPet {
                 System.out.println("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + maior.getValorBase() + " - " + maior.getVoa());
 			} else if (maiorPet instanceof Mamifero maior) {
 				//TODO substituir por impressao no arquivo
-				System.out.println("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + maior.getValorBase() + " - " + maior.getPeso() + " - " + maior.getPelo());
+				System.out.println("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + maior.getValorBase() + " - " + maior.getPeso() + " - " + maior.getPeloString());
 			}
 		}
 	}
 
 	private void mostraDadosPets() {
+		//TODO substituir por entrada do arquivo
 		int codigo = in.nextInt();
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
@@ -106,8 +107,39 @@ public class ACMEPet {
 				System.out.println("5: " + ave.getCodigo() + " - " + ave.getNome() + " - " + ave.getValorBase() + " - " + ave.getVoa());
 			} else if (pet instanceof Mamifero mam) {
 				//TODO substituir por impressao no arquivo
-				System.out.println("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPelo());
+				System.out.println("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPeloString());
 			}
+		}
+	}
+
+	private void removePet() {
+		//TODO substituir por entrada do arquivo
+		int codigo = in.nextInt();
+		Pet pet = (Pet) bicharada.retrieve(codigo);
+		if (pet == null) {
+			//TODO substituir por impressao no arquivo
+			System.out.println("6: Pet nao encontrado.");
+		} else {
+			bicharada.delete(codigo);
+			//TODO substituir por impressao no arquivo
+			System.out.println("6: Pet removido, codigo: " + codigo);
+		}
+	}
+
+	private void qtdAvesVoam() {
+		int cont = bicharada.qtdAvesVoam();
+		//TODO substituir por impressao no arquivo
+		System.out.println("7: Quantidade de aves que voam: " + cont);
+	}
+
+	private void mostraMamPeloCurtoMaisPesado() {
+		Mamifero mam = bicharada.mamiferoPeloCurtoMaisPesado();
+		if (mam == null) {
+			//TODO substituir por impressao no arquivo
+			System.out.println("8: Nenhum mamifero de pelo curto encontrado.");
+		} else {
+			//TODO substituir por impressao no arquivo
+			System.out.println("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPeloString());
 		}
 	}
 

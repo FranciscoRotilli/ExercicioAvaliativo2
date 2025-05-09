@@ -19,7 +19,11 @@ public class Mamifero extends Pet {
 		return peso;
 	}
 
-	public String getPelo() {
+	public Pelo getPelo() {
+		return pelo;
+	}
+
+	public String getPeloString() {
 		return pelo.toString();
 	}
 }
