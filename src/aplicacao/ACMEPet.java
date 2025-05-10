@@ -1,28 +1,30 @@
 package aplicacao;
 import dados.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Scanner;
 
 public class ACMEPet {
 	private final Bicharada bicharada;
-	private final Scanner in;
+	private final Path pathRelatorio;
+	private final Path pathEntrada;
 
 	public ACMEPet() {
 		bicharada = new Bicharada();
-		in = new Scanner(System.in);
 		Locale.setDefault(Locale.US);
+		pathRelatorio = Paths.get("relatorio.txt");
+		pathEntrada = Paths.get("dados.txt");
 	}
 
 	public void executar() {
+		inicializaRelatorio(); // Prepara arquivo do relatorio
 		cadastraAves(); // 1. Cadastrar aves
 		cadastraMamiferos(); // 2. Cadastrar mamíferos
 		mostraValoresPets(); // 3. Mostrar valores de todos os pets
@@ -44,11 +46,9 @@ public class ACMEPet {
 			if (bicharada.verificaCodigoUnico(codigo)) {
 				Pet pet = new Ave(codigo, nome, valorBase, voa);
 				bicharada.create(pet);
-				//TODO substituir por impressao no arquivo
-				System.out.println("1: " + codigo + " – " + nome + " – " + String.format("%.2f", valorBase) + " - " + voa);
+				escreveRelatorio("1: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + voa);
 			} else {
-				//TODO substituir por impressao no arquivo
-				System.out.println("1: Erro: codigo repetido: " + codigo);
+				escreveRelatorio("1: Erro: codigo repetido: " + codigo);
 			}
 		}
 	}
@@ -66,11 +66,9 @@ public class ACMEPet {
 				if (bicharada.verificaCodigoUnico(codigo)) {
 					Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
 					bicharada.create(pet);
-					//TODO substituir por impressao no arquivo
-					System.out.println("2: " + codigo + " – " + nome + " – " + String.format("%.2f", valorBase) + " - " + peso + " - " + pelo);
+					escreveRelatorio("2: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + peso + " - " + pelo);
 				} else {
-					//TODO substituir por impressao no arquivo
-					System.out.println("2: Erro: codigo repetido: " + codigo);
+					escreveRelatorio("2: Erro: codigo repetido: " + codigo);
 				}
 			}
 		}
@@ -78,93 +76,79 @@ public class ACMEPet {
 
 	private void mostraValoresPets() {
 		if (bicharada.isEmpty()) {
-			//TODO substituir por impressao no arquivo
-			System.out.println("3: Nenhum pet encontrado.");
+			escreveRelatorio("3: Nenhum pet encontrado.");
 		} else {
 			for (Double valor : bicharada.getValoresPets()) {
-				//TODO substituir por impressao no arquivo
-				System.out.println("3: " + String.format("%.2f", valor));
+				escreveRelatorio("3: " + String.format("%.2f", valor));
 			}
 		}
 	}
 
 	private void maiorValorBase() {
 		if (bicharada.isEmpty()) {
-			//TODO substituir por impressao no arquivo
-			System.out.println("4: Nenhum pet encontrado.");
+			escreveRelatorio("4: Nenhum pet encontrado.");
 		} else {
 			Pet maiorPet = bicharada.getMaiorValorPet();
 			if (maiorPet instanceof Ave maior) {
-				//TODO substituir por impressao no arquivo
-                System.out.println("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getVoa());
+                escreveRelatorio("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getVoa());
 			} else if (maiorPet instanceof Mamifero maior) {
-				//TODO substituir por impressao no arquivo
-				System.out.println("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getPeso() + " - " + maior.getPeloString());
+				escreveRelatorio("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getPeso() + " - " + maior.getPeloString());
 			}
 		}
 	}
 
 	private void mostraDadosPet() {
-		int codigo = leEntrada("dados.txt", 0);
+		int codigo = leEntrada(0);
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
-			//TODO substituir por impressao no arquivo
-			System.out.println("5: Pet nao encontrado.");
+			escreveRelatorio("5: Pet nao encontrado.");
 		} else {
 			if (pet instanceof Ave ave) {
-				//TODO substituir por impressao no arquivo
-				System.out.println("5: " + ave.getCodigo() + " - " + ave.getNome() + " - " + String.format("%.2f", ave.getValorBase()) + " - " + ave.getVoa());
+				escreveRelatorio("5: " + ave.getCodigo() + " - " + ave.getNome() + " - " + String.format("%.2f", ave.getValorBase()) + " - " + ave.getVoa());
 			} else if (pet instanceof Mamifero mam) {
-				//TODO substituir por impressao no arquivo
-				System.out.println("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + String.format("%.2f", mam.getValorBase()) + " - " + mam.getPeso() + " - " + mam.getPeloString());
+				escreveRelatorio("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + String.format("%.2f", mam.getValorBase()) + " - " + mam.getPeso() + " - " + mam.getPeloString());
 			}
 		}
 	}
 
 	private void removePet() {
-		int codigo = leEntrada("dados.txt", 1);
+		int codigo = leEntrada(1);
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
-			//TODO substituir por impressao no arquivo
-			System.out.println("6: Pet nao encontrado.");
+			escreveRelatorio("6: Pet nao encontrado.");
 		} else {
 			bicharada.delete(codigo);
-			//TODO substituir por impressao no arquivo
-			System.out.println("6: Pet removido, codigo: " + codigo);
+			escreveRelatorio("6: Pet removido, codigo: " + codigo);
 		}
 	}
 
 	private void qtdAvesVoam() {
 		int cont = bicharada.qtdAvesVoam();
-		//TODO substituir por impressao no arquivo
-		System.out.println("7: Quantidade de aves que voam: " + cont);
+		escreveRelatorio("7: Quantidade de aves que voam: " + cont);
 	}
 
 	private void mostraMamPeloCurtoMaisPesado() {
 		Mamifero mam = bicharada.mamiferoPeloCurtoMaisPesado();
 		if (mam == null) {
-			//TODO substituir por impressao no arquivo
-			System.out.println("8: Nenhum mamifero de pelo curto encontrado.");
+			escreveRelatorio("8: Nenhum mamifero de pelo curto encontrado.");
 		} else {
-			//TODO substituir por impressao no arquivo
-			System.out.println("8: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPeloString());
+			escreveRelatorio("8: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPeloString());
 		}
 	}
 
 	private void mostraPeloMaiorQtd() {
-		//TODO substituir por impressao no arquivo
-		if (bicharada.isEmpty()) System.out.println("ERRO!");
+		if (bicharada.isEmpty()) escreveRelatorio("ERRO!");
 
 		int curto = bicharada.contPelo(Pelo.CURTO);
 		int medio = bicharada.contPelo(Pelo.MEDIO);
 		int longo = bicharada.contPelo(Pelo.LONGO);
 
 		if (curto == 0 && medio == 0 && longo == 0) {
-			System.out.println("9: Nenhum mamifero cadastrado.");
+			escreveRelatorio("9: Nenhum mamifero cadastrado.");
 		} else {
-			if (curto > medio && curto > longo) System.out.println("9: CURTO - " + curto);
-			else if (medio > curto && medio > longo) System.out.println("9: MEDIO - " + medio);
-			else System.out.println("9: LONGO - " + longo);
+			if (curto > medio && curto > longo) escreveRelatorio("9: CURTO - " + curto);
+			else if (medio > curto && medio > longo) escreveRelatorio("9: MEDIO - " + medio);
+			else escreveRelatorio("9: LONGO - " + longo);
 		}
 	}
 
@@ -185,10 +169,9 @@ public class ACMEPet {
 		return dados;
 	}
 
-	private int leEntrada(String arquivo, int linha) {
-		Path path = Paths.get(arquivo);
+	private int leEntrada(int linha) {
 		int entrada = 0;
-		try (BufferedReader reader = Files.newBufferedReader(path, Charset.defaultCharset())) {
+		try (BufferedReader reader = Files.newBufferedReader(pathEntrada, Charset.defaultCharset())) {
 			String[] line = new String[2];
 			line[0] = reader.readLine();
 			line[1] = reader.readLine();
@@ -200,6 +183,25 @@ public class ACMEPet {
 			System.err.format("Erro de E/S: %s%n", e);
 		}
 		return entrada;
+	}
+
+	private void inicializaRelatorio() {
+		try {
+			Files.write(pathRelatorio, new byte[0]);
+		}
+		catch (IOException e) {
+			System.err.format("Erro de E/S: %s%n", e);
+		}
+	}
+
+	private void escreveRelatorio(String linha) {
+		try (BufferedWriter writer = Files.newBufferedWriter(pathRelatorio, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
+			writer.write(linha);
+			writer.newLine();
+		}
+		catch (IOException e) {
+			System.err.format("Erro de E/S: %s%n", e);
+		}
 	}
 
 }

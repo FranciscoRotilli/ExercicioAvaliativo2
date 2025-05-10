@@ -1,0 +1,18 @@
+1: 111 - Blu - 11.11 - true
+1: 222 - Donald - 22.22 - false
+1: 333 - Jade - 33.33 - true
+2: 666 - Coiote - 6.66 - 6.66 - CURTO
+2: 555 - Garfield - 44.44 - 4.44 - MEDIO
+2: 444 - Pluto - 55.55 - 5.55 - CURTO
+3: 14.44
+3: 22.22
+3: 43.33
+3: 7.33
+3: 53.33
+3: 61.11
+4: 444 - Pluto - 55.55 - 5.55 - CURTO
+5: 222 - Donald - 22.22 - false
+6: Pet removido, codigo: 111
+7: Quantidade de aves que voam: 1
+8: 666 - Coiote - 6.66 - 6.66 - CURTO
+9: CURTO - 2
