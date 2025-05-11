@@ -1,7 +1,7 @@
 package dados;
 
 public class Ave extends Pet {
-	private boolean voa;
+	private final boolean voa;
 
 	public Ave(int codigo, String nome, double valorBase, boolean voa) {
 		super(codigo, nome, valorBase);

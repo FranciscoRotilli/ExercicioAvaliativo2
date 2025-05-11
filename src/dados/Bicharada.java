@@ -2,7 +2,7 @@ package dados;
 import java.util.ArrayList;
 
 public class Bicharada implements Crud {
-	private ArrayList<Pet> pets;
+	private final ArrayList<Pet> pets;
 
 	public Bicharada() {
 		pets = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Bicharada implements Crud {
 		double maiorValor = 0;
 		Pet maiorPet = pets.getFirst();
 		for (Pet pet : pets) {
-			double valor = pet.calculaValor();
+			double valor = pet.getValorBase();
 			if (valor > maiorValor) {
 				maiorValor = valor;
 				maiorPet = pet;

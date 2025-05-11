@@ -1,8 +1,8 @@
 package dados;
 
 public class Mamifero extends Pet {
-	private double peso;
-	private Pelo pelo;
+	private final double peso;
+	private final Pelo pelo;
 
 	public Mamifero(int codigo, String nome, double valorBase, double peso, Pelo pelo) {
         super(codigo, nome, valorBase);

@@ -1,18 +1,30 @@
 1: 111 - Blu - 11.11 - true
 1: 222 - Donald - 22.22 - false
 1: 333 - Jade - 33.33 - true
-2: 666 - Coiote - 6.66 - 6.66 - CURTO
-2: 555 - Garfield - 44.44 - 4.44 - MEDIO
-2: 444 - Pluto - 55.55 - 5.55 - CURTO
+1: 444 - Papa Leguas - 44.44 - false
+1: 555 - Piu-Piu - 55.55 - true
+1: 666 - Pica Pau - 66.66 - true
+2: 777 - Coiote - 7.77 - 7.77 - CURTO
+2: 888 - Garfield - 44.44 - 4.44 - MEDIO
+2: 606 - Leoncio - 66.66 - 6.6 - LONGO
+2: 909 - Pernalonga - 99.99 - 9.9 - CURTO
+2: 808 - Ze Colmeia - 88.88 - 8.8 - LONGO
+2: 999 - Pooh - 55.55 - 5.55 - LONGO
 3: 14.44
 3: 22.22
 3: 43.33
-3: 7.33
+3: 44.44
+3: 72.22
+3: 86.66
+3: 8.55
 3: 53.33
-3: 61.11
-4: 444 - Pluto - 55.55 - 5.55 - CURTO
-5: 222 - Donald - 22.22 - false
-6: Pet removido, codigo: 111
-7: Quantidade de aves que voam: 1
-8: 666 - Coiote - 6.66 - 6.66 - CURTO
-9: CURTO - 2
+3: 106.66
+3: 109.99
+3: 142.21
+3: 88.88
+4: 909 - Pernalonga - 99.99 - 9.9 - CURTO
+5: 555 - Piu-Piu - 55.55 - true
+6: Pet removido, codigo: 888
+7: Quantidade de aves que voam: 4
+8: 909 - Pernalonga - 99.99 - 9.9 - CURTO
+9: LONGO - 3

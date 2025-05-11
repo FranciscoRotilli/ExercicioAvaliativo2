@@ -9,18 +9,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class ACMEPet {
 	private final Bicharada bicharada;
-	private final Path pathRelatorio;
-	private final Path pathEntrada;
+	private static final Path PATH_RELATORIO = Paths.get("relatorio.txt");
+	private static final Path PATH_ENTRADA = Paths.get("dados.txt");
 
 	public ACMEPet() {
 		bicharada = new Bicharada();
-		Locale.setDefault(Locale.US);
-		pathRelatorio = Paths.get("relatorio.txt");
-		pathEntrada = Paths.get("dados.txt");
 	}
 
 	public void executar() {
@@ -43,9 +39,8 @@ public class ACMEPet {
 			String nome = linha.get(1);
 			double valorBase = Double.parseDouble(linha.get(2));
 			boolean voa = linha.get(3).equals("TRUE");
-			if (bicharada.verificaCodigoUnico(codigo)) {
-				Pet pet = new Ave(codigo, nome, valorBase, voa);
-				bicharada.create(pet);
+			Pet pet = new Ave(codigo, nome, valorBase, voa);
+			if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
 				escreveRelatorio("1: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + voa);
 			} else {
 				escreveRelatorio("1: Erro: codigo repetido: " + codigo);
@@ -63,9 +58,8 @@ public class ACMEPet {
 				double peso = Double.parseDouble(linha.get(3));
 				String pelo = linha.get(4);
 				Pelo peloEnum = pelo.equals("CURTO") ? Pelo.CURTO : pelo.equals("MEDIO") ? Pelo.MEDIO : pelo.equals("LONGO") ? Pelo.LONGO : null;
-				if (bicharada.verificaCodigoUnico(codigo)) {
-					Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
-					bicharada.create(pet);
+				Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
+				if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
 					escreveRelatorio("2: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + peso + " - " + pelo);
 				} else {
 					escreveRelatorio("2: Erro: codigo repetido: " + codigo);
@@ -116,8 +110,7 @@ public class ACMEPet {
 		Pet pet = (Pet) bicharada.retrieve(codigo);
 		if (pet == null) {
 			escreveRelatorio("6: Pet nao encontrado.");
-		} else {
-			bicharada.delete(codigo);
+		} else if (bicharada.delete(codigo)) {
 			escreveRelatorio("6: Pet removido, codigo: " + codigo);
 		}
 	}
@@ -171,13 +164,12 @@ public class ACMEPet {
 
 	private int leEntrada(int linha) {
 		int entrada = 0;
-		try (BufferedReader reader = Files.newBufferedReader(pathEntrada, Charset.defaultCharset())) {
+		try (BufferedReader reader = Files.newBufferedReader(PATH_ENTRADA, Charset.defaultCharset())) {
 			String[] line = new String[2];
 			line[0] = reader.readLine();
 			line[1] = reader.readLine();
 			if (linha == 0) entrada = Integer.parseInt(line[0]);
 			else if (linha == 1) entrada = Integer.parseInt(line[1]);
-
 		}
 		catch (IOException e) {
 			System.err.format("Erro de E/S: %s%n", e);
@@ -187,7 +179,7 @@ public class ACMEPet {
 
 	private void inicializaRelatorio() {
 		try {
-			Files.write(pathRelatorio, new byte[0]);
+			Files.write(PATH_RELATORIO, new byte[0]);
 		}
 		catch (IOException e) {
 			System.err.format("Erro de E/S: %s%n", e);
@@ -195,7 +187,7 @@ public class ACMEPet {
 	}
 
 	private void escreveRelatorio(String linha) {
-		try (BufferedWriter writer = Files.newBufferedWriter(pathRelatorio, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
+		try (BufferedWriter writer = Files.newBufferedWriter(PATH_RELATORIO, Charset.defaultCharset(), StandardOpenOption.APPEND)) {
 			writer.write(linha);
 			writer.newLine();
 		}
@@ -203,5 +195,4 @@ public class ACMEPet {
 			System.err.format("Erro de E/S: %s%n", e);
 		}
 	}
-
 }
