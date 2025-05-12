@@ -1,9 +1,9 @@
 package dados;
 
 public abstract class Pet {
-	private int codigo;
-	private String nome;
-	private double valorBase;
+	private final int codigo;
+	private final String nome;
+	private final double valorBase;
 
 	public Pet(int codigo, String nome, double valorBase) {
 		this.codigo = codigo;
