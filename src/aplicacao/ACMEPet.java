@@ -35,36 +35,47 @@ public class ACMEPet {
 	private void cadastraAves() {
 		ArrayList<ArrayList<String>> dados = leDados("aves.csv");
 		for (ArrayList<String> linha : dados) {
-			int codigo = Integer.parseInt(linha.get(0));
-			String nome = linha.get(1);
-			double valorBase = Double.parseDouble(linha.get(2));
-			boolean voa = linha.get(3).equals("TRUE");
-			Pet pet = new Ave(codigo, nome, valorBase, voa);
-			if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
-				escreveRelatorio("1: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + voa);
-			} else {
-				escreveRelatorio("1: Erro: codigo repetido: " + codigo);
-			}
-		}
+            try {
+                int codigo = Integer.parseInt(linha.get(0));
+                String nome = linha.get(1);
+                double valorBase = Double.parseDouble(linha.get(2));
+                boolean voa = linha.get(3).equals("TRUE");
+                Pet pet = new Ave(codigo, nome, valorBase, voa);
+                if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
+                    escreveRelatorio("1: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + voa);
+                } else {
+                    escreveRelatorio("1: Erro: codigo repetido: " + codigo);
+                }
+            } catch (NumberFormatException e) {
+				escreveRelatorio("1: Erro de leitura de aves.");
+            }
+        }
 	}
 
 	private void cadastraMamiferos() {
 		ArrayList<ArrayList<String>> dados = leDados("mamiferos.csv");
 		if (!dados.isEmpty()) {
 			for (ArrayList<String> linha : dados) {
-				int codigo = Integer.parseInt(linha.get(0));
-				String nome = linha.get(1);
-				double valorBase = Double.parseDouble(linha.get(2));
-				double peso = Double.parseDouble(linha.get(3));
-				String pelo = linha.get(4);
-				Pelo peloEnum = pelo.equals("CURTO") ? Pelo.CURTO : pelo.equals("MEDIO") ? Pelo.MEDIO : pelo.equals("LONGO") ? Pelo.LONGO : null;
-				Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
-				if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
-					escreveRelatorio("2: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + peso + " - " + pelo);
-				} else {
-					escreveRelatorio("2: Erro: codigo repetido: " + codigo);
-				}
-			}
+                try {
+                    int codigo = Integer.parseInt(linha.get(0));
+                    String nome = linha.get(1);
+                    double valorBase = Double.parseDouble(linha.get(2));
+                    double peso = Double.parseDouble(linha.get(3));
+                    String pelo = linha.get(4);
+                    Pelo peloEnum = pelo.equals("CURTO") ? Pelo.CURTO : pelo.equals("MEDIO") ? Pelo.MEDIO : pelo.equals("LONGO") ? Pelo.LONGO : null;
+					if (peloEnum == null) {
+						throw new NumberFormatException();
+					}
+                    Pet pet = new Mamifero(codigo, nome, valorBase, peso, peloEnum);
+                    if (bicharada.verificaCodigoUnico(codigo) && bicharada.create(pet)) {
+                        escreveRelatorio("2: " + codigo + " - " + nome + " - " + String.format("%.2f", valorBase) + " - " + peso + " - " + pelo);
+                    } else {
+                        escreveRelatorio("2: Erro: codigo repetido: " + codigo);
+                    }
+                } catch (NumberFormatException e) {
+                    escreveRelatorio("2: Erro de leitura de mamiferos.");
+                }
+            }
 		}
 	}
 
@@ -86,7 +97,7 @@ public class ACMEPet {
 			if (maiorPet instanceof Ave maior) {
                 escreveRelatorio("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getVoa());
 			} else if (maiorPet instanceof Mamifero maior) {
-				escreveRelatorio("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getPeso() + " - " + maior.getPeloString());
+				escreveRelatorio("4: " + maior.getCodigo() + " - " + maior.getNome() + " - " + String.format("%.2f", maior.getValorBase()) + " - " + maior.getPeso() + " - " + maior.getPelo());
 			}
 		}
 	}
@@ -100,7 +111,7 @@ public class ACMEPet {
 			if (pet instanceof Ave ave) {
 				escreveRelatorio("5: " + ave.getCodigo() + " - " + ave.getNome() + " - " + String.format("%.2f", ave.getValorBase()) + " - " + ave.getVoa());
 			} else if (pet instanceof Mamifero mam) {
-				escreveRelatorio("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + String.format("%.2f", mam.getValorBase()) + " - " + mam.getPeso() + " - " + mam.getPeloString());
+				escreveRelatorio("5: " + mam.getCodigo() + " - " + mam.getNome() + " - " + String.format("%.2f", mam.getValorBase()) + " - " + mam.getPeso() + " - " + mam.getPelo());
 			}
 		}
 	}
@@ -125,7 +136,7 @@ public class ACMEPet {
 		if (mam == null) {
 			escreveRelatorio("8: Nenhum mamifero de pelo curto encontrado.");
 		} else {
-			escreveRelatorio("8: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPeloString());
+			escreveRelatorio("8: " + mam.getCodigo() + " - " + mam.getNome() + " - " + mam.getValorBase() + " - " + mam.getPeso() + " - " + mam.getPelo());
 		}
 	}
 
@@ -168,8 +179,21 @@ public class ACMEPet {
 			String[] line = new String[2];
 			line[0] = reader.readLine();
 			line[1] = reader.readLine();
-			if (linha == 0) entrada = Integer.parseInt(line[0]);
-			else if (linha == 1) entrada = Integer.parseInt(line[1]);
+			if (linha == 0) {
+                try {
+                    entrada = Integer.parseInt(line[0]);
+                } catch (NumberFormatException e) {
+					escreveRelatorio("5: Erro: leitura do arquivo de dados.");
+                    entrada = -1;
+                }
+            } else if (linha == 1) {
+                try {
+                    entrada = Integer.parseInt(line[1]);
+                } catch (NumberFormatException e) {
+					escreveRelatorio("6: Erro: leitura do arquivo de dados.");
+                    entrada = -1;
+                }
+            }
 		}
 		catch (IOException e) {
 			System.err.format("Erro de E/S: %s%n", e);
